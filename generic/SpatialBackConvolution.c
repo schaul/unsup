@@ -17,7 +17,7 @@ static int nn_(SpatialBackConvolution_forward)(lua_State *L)
   /* do convolutions */
   THTensor *tweight = THTensor_(newTranspose)(weight,0,1);
   // TODO: Not sure what the alpha/beta default values should be, but I just set alpha to 1.0 (from undefined)
-  THLab_(conv2Dmv)(output, 0.0, 0.0, input, tweight, dH, dW, "fc");
+  THLab_(conv2Dmv)(output, 0.0, 1.0, input, tweight, dH, dW, "fc");
   THTensor_(free)(tweight);
   
   return 1;
@@ -40,11 +40,11 @@ static int nn_(SpatialBackConvolution_backward)(lua_State *L)
 
   /* gradient to kernels */
   // TODO: Not sure what the alpha/beta default values should be, but I just set alpha to 1.0 (from undefined)
-  THLab_(conv2DRevger)(gradWeight, 1.0, 0.0, gradOutput, input, dH, dW);
+  THLab_(conv2DRevger)(gradWeight, 1.0, 1.0, gradOutput, input, dH, dW);
 
   /* gradient to input */
   // TODO: Not sure what the alpha/beta default values should be, but I just set alpha to 1.0 (from undefined)
-  THLab_(conv2Dmv)(gradInput, 0.0, 0.0, gradOutput, weight, dH, dW, "vx");
+  THLab_(conv2Dmv)(gradInput, 0.0, 1.0, gradOutput, weight, dH, dW, "vx");
 
   return 1;
 }
