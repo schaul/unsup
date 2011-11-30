@@ -25,11 +25,12 @@ function SpatialBackConvolution:reset(stdv)
                      end)
 end
 
-function SpatialBackConvolution:forward(input)
+function SpatialBackConvolution:updateOutput(input)
    return input.nn.SpatialBackConvolution_forward(self, input)
 end
 
-function SpatialBackConvolution:backward(input, gradOutput)
+
+function SpatialBackConvolution:updateGradInput(input, gradOutput)
    local gi = input.nn.SpatialBackConvolution_backward(self, input, gradOutput)
 --    print('input', input:size())
 --    print('ginput',gi:size())
